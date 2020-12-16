@@ -1,0 +1,7 @@
+node_modules
+todo.o
+todo.out
+todo.txt
+todo
+.idea
+package-lock.json
