@@ -70,19 +70,24 @@ int main(int argc, char* argv[])
             while (fin)
             {
                 getline(fin, todo);
-                v.push_back(todo);
+                if (!todo.empty())
+                    v.push_back(todo);
             }
 
-            for (i = v.size() - 1; i >= 0; --i)
-                if (i + 1 != num)
-                    s = v[i] + "\n" + s;
+            if (v.empty() or (long unsigned int)num > v.size() or num < 1)
+                cout << "Error: todo #" << num << " does not exist. Nothing deleted.\n";
+            else {
+                for (i = v.size() - 1; i >= 0; --i)
+                    if (i + 1 != num)
+                        s = v[i] + "\n" + s;
 
-            ofstream fout;
-            fout.open("todo.txt");
+                ofstream fout;
+                fout.open("todo.txt");
 
-            fout << s;
+                fout << s;
 
-            cout << "Deleted todo #" << num << '\n';
+                cout << "Deleted todo #" << num << '\n';
+            }
         }
     }
     return 0;
