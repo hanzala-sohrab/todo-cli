@@ -36,9 +36,13 @@ int main(int argc, char* argv[])
         }
         fin.close();
 
-        int i, N = v.size();
-        for (i = N - 1; i >= 0; --i)
-            cout << '[' << i + 1 << "] " << v[i] << '\n';
+        if (v.empty())
+            cout << "There are no pending todos!\n";
+        else {
+            int i, N = v.size();
+            for (i = N - 1; i >= 0; --i)
+                cout << '[' << i + 1 << "] " << v[i] << '\n';
+        }
     }
     else if (argc == 3)
     {
