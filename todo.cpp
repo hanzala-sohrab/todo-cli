@@ -76,8 +76,6 @@ int main(int argc, char* argv[])
 
             fout << s;
 
-            cout << s;
-
             cout << "Deleted todo #" << num << '\n';
         }
     }
