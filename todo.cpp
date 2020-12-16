@@ -18,6 +18,8 @@ int main(int argc, char* argv[])
                 "$ ./todo report           # Statistics\n";
     else if (argc > 1 and strcmp(argv[1], "add") == 0 and argv[2] == 0)
         std::cout << "Error: Missing todo string. Nothing added!\n";
+    else if (argc > 1 and strcmp(argv[1], "del") == 0 and argv[2] == 0)
+        std::cout << "Error: Missing NUMBER for deleting todo.\n";
     else if (argc == 2 and strcmp(argv[1], "ls") == 0)
     {
         std::ifstream fin;
