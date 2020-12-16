@@ -52,25 +52,31 @@ int main(int argc, char* argv[])
         }
         else if (strcmp(argv[1], "del") == 0)
         {
-            ifstream fin;
+            std::ifstream fin;
             fin.open("todo.txt");
 
-            std::ofstream fout;
-            fout.open("todo.txt", ios::app);
+            vector<string> v;
+            string todo, s;
 
-            int i = 0, num;
+            int i, num;
             sscanf(argv[2], "%d", &num);
 
             while (fin)
             {
-                string todo;
                 getline(fin, todo);
-                ++i;
-                if (i == num)
-                    fout << "";
+                v.push_back(todo);
             }
-            fin.close();
-            fout.close();
+
+            for (i = v.size() - 1; i >= 0; --i)
+                if (i + 1 != num)
+                    s = v[i] + "\n" + s;
+
+            ofstream fout;
+            fout.open("todo.txt");
+
+            fout << s;
+
+            cout << s;
 
             cout << "Deleted todo #" << num << '\n';
         }
