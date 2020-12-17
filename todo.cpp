@@ -26,6 +26,11 @@ void missing_delete_number()
     cout << "Error: Missing NUMBER for deleting todo.\n";
 }
 
+void missing_done_number()
+{
+    cout << "Error: Missing NUMBER for marking todo as done.\n";
+}
+
 string ls()
 {
     ifstream fin;
@@ -134,6 +139,8 @@ int main(int argc, char* argv[])
             missing_delete_number();
         else if (strcmp(argv[1], "add") == 0)
             missing_todo_string();
+        else if (strcmp(argv[1], "done") == 0)
+            missing_done_number();
     }
     else if (argc == 3)
     {
