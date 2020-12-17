@@ -3,6 +3,8 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <cstdio>
+#include <ctime>
 using namespace std;
 
 void help()
@@ -117,38 +119,75 @@ string done_todo(char* todoItem)
 
 void report()
 {
+    int pendingTodos = 0, completedTodos = 0;
+    string todo;
+    ifstream fin("todo.txt");
 
+    while (getline(fin, todo))
+        ++pendingTodos;
+
+    fin.close();
+
+    fin.open("done.txt");
+
+    while (getline(fin, todo))
+        ++completedTodos;
+
+    time_t rawtime;
+    tm* timeinfo;
+    char buffer [80];
+
+    time(&rawtime);
+    timeinfo = localtime(&rawtime);
+
+    strftime(buffer,80,"%Y-%m-%d",timeinfo);
+    printf("%s Pending : %d Completed : %d\n", buffer, pendingTodos, completedTodos);
 }
 
 int main(int argc, char* argv[])
 {
+    // If no extra arguments, then show help
     if (argc == 1)
         help();
     else if (argc == 2)
     {
+        // Showing help
         if (strcmp(argv[1], "help") == 0)
             help();
+
+        // Listing todos
         else if (strcmp(argv[1], "ls") == 0)
         {
             string s = ls();
             cout << s;
         }
+
+        // Reporting
         else if (strcmp(argv[1], "report") == 0)
             report();
+
+        // Show error if no todo number provided for deleting
         else if (strcmp(argv[1], "del") == 0)
             missing_delete_number();
+
+        // Show error if no todo provided for adding
         else if (strcmp(argv[1], "add") == 0)
             missing_todo_string();
+
+        // Show error if no todo number provided for marking as done
         else if (strcmp(argv[1], "done") == 0)
             missing_done_number();
     }
     else if (argc == 3)
     {
+        // Adding a todo
         if (strcmp(argv[1], "add") == 0)
         {
             add_todo(argv[2]);
             cout << "Added todo: \"" << argv[2] << "\"\n";
         }
+
+        // Deleting a todo
         else if (strcmp(argv[1], "del") == 0)
         {
             string r = delete_todo(argv[2]);
@@ -157,6 +196,8 @@ int main(int argc, char* argv[])
             else
                 cout << "Deleted todo #" << argv[2] << '\n';
         }
+
+        // Marking todo as done
         else if (strcmp(argv[1], "done") == 0)
         {
             string r = done_todo(argv[2]);
