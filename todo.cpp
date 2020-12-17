@@ -107,10 +107,21 @@ string done_todo(char* todoItem)
     ofstream fout;
     fout.open("done.txt", ios::app);
 
+
     string r = delete_todo(todoItem);
 
     if (r != "Error")
     {
+        time_t rawtime;
+        tm* timeinfo;
+        char buffer [80];
+        time(&rawtime);
+        timeinfo = localtime(&rawtime);
+
+        strftime(buffer,80,"%Y-%m-%d",timeinfo);
+        string t(buffer);
+
+        r = "x " + t + " " + r;
         fout << r << '\n';
         fout.close();
     }
