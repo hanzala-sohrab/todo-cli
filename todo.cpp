@@ -31,7 +31,6 @@ void ls()
     ifstream fin;
     fin.open("todo.txt");
 
-    vector<string> v;
     string todo, s;
     int i = 0;
 
@@ -46,12 +45,8 @@ void ls()
 
     if (s.empty())
         cout << "There are no pending todos!\n";
-    else {
-//        int i, N = v.size();
-//        for (i = N - 1; i >= 0; --i)
-//            cout << '[' << i + 1 << "] " << v[i] << '\n';
+    else
         cout << s;
-    }
 }
 
 void add_todo(char* todoItem)
