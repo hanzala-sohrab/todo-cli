@@ -26,7 +26,7 @@ void missing_delete_number()
     cout << "Error: Missing NUMBER for deleting todo.\n";
 }
 
-void ls()
+string ls()
 {
     ifstream fin;
     fin.open("todo.txt");
@@ -44,9 +44,8 @@ void ls()
     fin.close();
 
     if (s.empty())
-        cout << "There are no pending todos!\n";
-    else
-        cout << s;
+        s = "There are no pending todos!\n";
+    return s;
 }
 
 void add_todo(char* todoItem)
@@ -56,17 +55,15 @@ void add_todo(char* todoItem)
 
     fout << todoItem << "\n";
     fout.close();
-
-    std::cout << "Added todo: \"" << todoItem << "\"\n";
 }
 
-void delete_todo(char* todoItem)
+string delete_todo(char* todoItem)
 {
     ifstream fin;
     fin.open("todo.txt");
 
     vector<string> v;
-    string todo, s;
+    string todo, s, r;
 
     int i, num;
     sscanf(todoItem, "%d", &num);
@@ -79,19 +76,43 @@ void delete_todo(char* todoItem)
     }
 
     if (v.empty() or (long unsigned int)num > v.size() or num < 1)
-        cout << "Error: todo #" << num << " does not exist. Nothing deleted.\n";
-    else {
+        r = "Error";
+    else
+    {
         for (i = v.size() - 1; i >= 0; --i)
             if (i + 1 != num)
                 s = v[i] + "\n" + s;
+            else
+                r = v[i];
 
         ofstream fout;
         fout.open("todo.txt");
-
         fout << s;
-
-        cout << "Deleted todo #" << num << '\n';
     }
+    return r;
+}
+
+string done_todo(char* todoItem)
+{
+    int num;
+    sscanf(todoItem, "%d", &num);
+
+    ofstream fout;
+    fout.open("done.txt", ios::app);
+
+    string r = delete_todo(todoItem);
+
+    if (r != "Error")
+    {
+        fout << r << '\n';
+        fout.close();
+    }
+    return r;
+}
+
+void report()
+{
+
 }
 
 int main(int argc, char* argv[])
@@ -103,7 +124,12 @@ int main(int argc, char* argv[])
         if (strcmp(argv[1], "help") == 0)
             help();
         else if (strcmp(argv[1], "ls") == 0)
-            ls();
+        {
+            string s = ls();
+            cout << s;
+        }
+        else if (strcmp(argv[1], "report") == 0)
+            report();
         else if (strcmp(argv[1], "del") == 0)
             missing_delete_number();
         else if (strcmp(argv[1], "add") == 0)
@@ -112,39 +138,25 @@ int main(int argc, char* argv[])
     else if (argc == 3)
     {
         if (strcmp(argv[1], "add") == 0)
+        {
             add_todo(argv[2]);
+            cout << "Added todo: \"" << argv[2] << "\"\n";
+        }
         else if (strcmp(argv[1], "del") == 0)
         {
-            std::ifstream fin;
-            fin.open("todo.txt");
-
-            vector<string> v;
-            string todo, s;
-
-            int i, num;
-            sscanf(argv[2], "%d", &num);
-
-            while (fin)
-            {
-                getline(fin, todo);
-                if (!todo.empty())
-                    v.push_back(todo);
-            }
-
-            if (v.empty() or (long unsigned int)num > v.size() or num < 1)
-                cout << "Error: todo #" << num << " does not exist. Nothing deleted.\n";
-            else {
-                for (i = v.size() - 1; i >= 0; --i)
-                    if (i + 1 != num)
-                        s = v[i] + "\n" + s;
-
-                ofstream fout;
-                fout.open("todo.txt");
-
-                fout << s;
-
-                cout << "Deleted todo #" << num << '\n';
-            }
+            string r = delete_todo(argv[2]);
+            if (r == "Error")
+                cout << "Error: todo #" << argv[2] << " does not exist. Nothing deleted.\n";
+            else
+                cout << "Deleted todo #" << argv[2] << '\n';
+        }
+        else if (strcmp(argv[1], "done") == 0)
+        {
+            string r = done_todo(argv[2]);
+            if (r == "Error")
+                cout << "Error: todo #" << argv[2] << " does not exist.\n";
+            else
+                cout << "Marked todo #" << argv[2] << " as done.\n";
         }
     }
     return 0;
