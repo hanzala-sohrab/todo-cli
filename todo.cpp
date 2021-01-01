@@ -33,12 +33,40 @@ void missing_done_number()
     cout << "Error: Missing NUMBER for marking todo as done.\n";
 }
 
-string getLastLine(ifstream& in)
+bool is_last_line_empty()
 {
-    string line;
-    //  std::ws
-    while (getline(in, line));
-    return line;
+    string filename = "todo.txt";
+    ifstream fin;
+    fin.open(filename);
+    if(fin.is_open())
+    {
+        fin.seekg(-1, ios_base::end);                // go to one spot before the EOF
+
+        bool keepLooping = true;
+        while (keepLooping)
+        {
+            char ch;
+            fin.get(ch);                            // Get current byte's data
+
+            if ((int) fin.tellg() <= 1)
+            {
+                // If the data was at or before the 0th byte
+                fin.seekg(0);                       // The first line is the last line
+                keepLooping = false;                // So stop there
+            }
+            // If the data was a newline
+            else if (ch == '\n')
+                keepLooping = false;                // Stop at the current position.
+            else
+                fin.seekg(-2, ios_base::cur);        // Move to the front of that data, then to the front of the data before it
+        }
+
+        string lastLine;
+        getline(fin, lastLine);                      // Read the current line
+        fin.close();
+        return lastLine.empty();
+    }
+    return false;
 }
 
 string ls()
@@ -47,8 +75,7 @@ string ls()
     fin.open("todo.txt");
 
     //  Checking if last line is empty
-    string lastLine = getLastLine(fin);
-    if (!lastLine.empty())
+    if (!is_last_line_empty())
     {
         ofstream fout;
         fout.open("todo.txt", ios::app);
