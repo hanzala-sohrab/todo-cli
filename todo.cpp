@@ -33,9 +33,31 @@ void missing_done_number()
     cout << "Error: Missing NUMBER for marking todo as done.\n";
 }
 
+string getLastLine(ifstream& in)
+{
+    string line;
+    //  std::ws
+    while (getline(in, line));
+    return line;
+}
+
 string ls()
 {
     ifstream fin;
+    fin.open("todo.txt");
+
+    //  Checking if last line is empty
+    string lastLine = getLastLine(fin);
+    if (!lastLine.empty())
+    {
+        ofstream fout;
+        fout.open("todo.txt", ios::app);
+        fout << "\n";
+        fout.close();
+    }
+
+    fin.close();
+
     fin.open("todo.txt");
 
     string todo, s;
