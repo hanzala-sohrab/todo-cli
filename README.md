@@ -162,6 +162,19 @@ $ ./todo report
 yyyy-mm-dd Pending : 1 Completed : 4
 ```
 
+### 7. Generate an HTML page listing all the todos
+
+Use the `html` command to generate an HTML snippet that lists all the remaining todos.
+
+```
+$ ./todo html
+<ul>
+<li>Foobar</li>
+<li>ABCD</li>
+<li>the thing i need to do</li>
+</ul>
+```
+
 
 ## Improving README.md
 If you feel like we are missing out steps, feel free to make a pull request. [GitHub Repo](https://github.com/nseadlc-2020/package-todo-cli-task)
