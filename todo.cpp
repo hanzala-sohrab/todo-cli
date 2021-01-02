@@ -104,6 +104,44 @@ string ls()
     return s;
 }
 
+void html()
+{
+    ifstream fin;
+    fin.open("todo.txt");
+
+    //  Checking if last line is empty
+    if (!is_last_line_empty())
+    {
+        ofstream fout;
+        fout.open("todo.txt", ios::app);
+        fout << "\n";
+        fout.close();
+    }
+
+    fin.close();
+
+    fin.open("todo.txt");
+
+    string todo, s = "<ul>";
+    cout << "<ul>\n";
+    int i = 0;
+
+    while (fin)
+    {
+        getline(fin, todo);
+        ++i;
+        if (!todo.empty())
+            cout << "<li>" << todo << "</li>" << '\n';
+    }
+//    s += "</ul>";
+    cout << "</ul>\n";
+    fin.close();
+
+//    if (s.empty())
+//        s = "There are no pending todos!\n";
+//    return s;
+}
+
 void add_todo(char* todoItem)
 {
     ofstream fout;
@@ -220,6 +258,12 @@ int main(int argc, char* argv[])
         {
             string s = ls();
             cout << s;
+        }
+
+        else if (strcmp(argv[1], "html") == 0)
+        {
+            html();
+//            cout << s;
         }
 
         // Reporting
