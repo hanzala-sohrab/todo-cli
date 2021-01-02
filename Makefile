@@ -8,7 +8,7 @@ test: app
 	npm run test
 
 clean:
-	rm -f todo.o todo.out
+	rm -f todo.o todo.out *.html *.txt
 
 install:
 	npm install

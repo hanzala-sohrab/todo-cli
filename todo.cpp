@@ -104,7 +104,7 @@ string ls()
     return s;
 }
 
-void html()
+string html()
 {
     ifstream fin;
     fin.open("todo.txt");
@@ -122,8 +122,7 @@ void html()
 
     fin.open("todo.txt");
 
-    string todo, s = "<ul>";
-    cout << "<ul>\n";
+    string todo, s;
     int i = 0;
 
     while (fin)
@@ -131,15 +130,15 @@ void html()
         getline(fin, todo);
         ++i;
         if (!todo.empty())
-            cout << "<li>" << todo << "</li>" << '\n';
+            s = "<li>" + todo + "</li>\n" + s;
     }
-//    s += "</ul>";
-    cout << "</ul>\n";
     fin.close();
 
-//    if (s.empty())
-//        s = "There are no pending todos!\n";
-//    return s;
+    if (s.empty())
+        return "There are no pending todos!\n";
+
+    s = "<ul>\n" + s + "</ul>\n";
+    return s;
 }
 
 void add_todo(char* todoItem)
@@ -262,8 +261,8 @@ int main(int argc, char* argv[])
 
         else if (strcmp(argv[1], "html") == 0)
         {
-            html();
-//            cout << s;
+            string s = html();
+            cout << s;
         }
 
         // Reporting
